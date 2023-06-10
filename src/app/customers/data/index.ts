@@ -3,7 +3,7 @@ import { customersFeature } from '@app/customers/data/customers.reducer';
 import { provideEffects } from '@ngrx/effects';
 import { CustomersEffects } from '@app/customers/data/customers-effects.service';
 
-export { CustomersFacade } from '@app/customers/data/customers-facade.service';
+export { CustomersFacade } from './customers-facade';
 
 export const provideCustomers = [
   provideState(customersFeature),

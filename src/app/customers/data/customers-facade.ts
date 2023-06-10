@@ -1,14 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { customersActions } from './customers.actions';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Customer } from '@app/customers/model';
 import { fromCustomers } from './customers.selectors';
 
 @Injectable({ providedIn: 'root' })
 export class CustomersFacade {
   #store = inject(Store);
-  #customers$ = new BehaviorSubject<Customer[]>([]);
 
   get customers$(): Observable<Customer[]> {
     return this.#store.select(fromCustomers.selectAll);
