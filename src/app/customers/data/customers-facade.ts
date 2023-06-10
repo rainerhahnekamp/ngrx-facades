@@ -4,6 +4,12 @@ import { customersActions } from './customers.actions';
 import { Observable } from 'rxjs';
 import { Customer } from '@app/customers/model';
 import { fromCustomers } from './customers.selectors';
+import { filterDefined } from '@app/shared';
+import { map } from 'rxjs/operators';
+
+function deepClone<T>(source$: Observable<T>): Observable<T> {
+  return source$.pipe(map((data) => structuredClone(data)));
+}
 
 @Injectable({ providedIn: 'root' })
 export class CustomersFacade {
@@ -15,10 +21,12 @@ export class CustomersFacade {
     return this.#store.select(fromCustomers.selectAll);
   }
 
-  byId(id: number): Observable<Customer | undefined> {
+  byId(id: number): Observable<Customer> {
     this.#assertLoaded();
 
-    return this.#store.select(fromCustomers.selectById(id));
+    return this.#store
+      .select(fromCustomers.selectById(id))
+      .pipe(filterDefined, deepClone);
   }
 
   #assertLoaded() {

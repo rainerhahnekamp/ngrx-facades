@@ -8,6 +8,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import {
+  FormsModule,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
@@ -25,6 +26,13 @@ import { Customer } from '@app/customers/model';
 @Component({
   selector: 'app-customer',
   template: `
+    <div>
+      <mat-form-field>
+        <mat-label>Firstname</mat-label>
+        <input *ngIf="customer" [(ngModel)]="customer.firstname" matInput />
+      </mat-form-field>
+    </div>
+
     <form (ngSubmit)="submit()" [formGroup]="formGroup" class="app-customer">
       <input type="hidden" formControlName="id" />
       <mat-form-field>
@@ -120,6 +128,7 @@ import { Customer } from '@app/customers/model';
     MatInputModule,
     MatSelectModule,
     NgForOf,
+    FormsModule,
   ],
 })
 export class CustomerComponent implements OnChanges {

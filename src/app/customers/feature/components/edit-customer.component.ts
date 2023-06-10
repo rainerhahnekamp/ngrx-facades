@@ -2,7 +2,6 @@ import { Component, inject, Input, OnInit } from '@angular/core';
 import { CustomersFacade } from '@app/customers/data';
 import { CustomerComponent } from '@app/customers/ui';
 import { AsyncPipe, NgIf } from '@angular/common';
-import { filterDefined } from '@app/shared';
 import { Customer } from '@app/customers/model';
 import { countries } from '../countries';
 import { Observable } from 'rxjs';
@@ -26,9 +25,7 @@ export class EditCustomerComponent implements OnInit {
   protected customer$: Observable<Customer> | undefined;
 
   ngOnInit() {
-    this.customer$ = this.#facade
-      .byId(Number(this.id || 0))
-      .pipe(filterDefined);
+    this.customer$ = this.#facade.byId(Number(this.id || 0));
   }
 
   submit(customer: Customer) {
