@@ -11,7 +11,7 @@ export const customersActions = {
   update,
   remove,
 };
-export { fromCustomers } from './customer.selectors';
+export { fromCustomers } from './customers.selectors';
 export const provideCustomers = [
   provideState(customersFeature),
   provideEffects(CustomersEffects),
