@@ -9,22 +9,7 @@ const selectById = (id: number) =>
     state.find((p) => p.id === id)
   );
 
-const { selectCurrentPage, selectPageCount } = customersFeature;
-
-const selectCustomersAndPage = createSelector(
-  selectAll,
-  selectCurrentPage,
-  selectPageCount,
-  (customers, currentPage, pageCount) => ({
-    customers,
-    currentPage,
-    pageCount,
-  })
-);
-
 export const fromCustomers = {
   selectAll,
   selectById,
-  selectCurrentPage,
-  selectCustomersAndPage,
 };

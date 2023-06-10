@@ -23,16 +23,16 @@ export type ViewModel = {
         >Add Customer</a
       >
     </p>
-    <div *ngIf="viewModel" class="customers">
+    <div *ngIf="customers.length > 0" class="customers">
       <div class="row header">
         <p class="edit">&nbsp;</p>
         <p class="name">Name</p>
         <p class="country">Country</p>
         <p class="birthdate">Date of Birth</p>
       </div>
-      <ng-container *ngIf="viewModel.customers.length > 0; else noCustomers">
+      <ng-container *ngIf="customers.length > 0; else noCustomers">
         <div
-          *ngFor="let customer of viewModel.customers"
+          *ngFor="let customer of customers"
           class="row"
           data-testid="row-customer"
           [attr.aria-labelledby]="'customer-' + customer.id"
@@ -47,24 +47,6 @@ export type ViewModel = {
           </p>
           <p class="country">{{ customer.country }}</p>
           <p class="birthdate">{{ customer.birthdate | date }}</p>
-        </div>
-        <div class="paginator">
-          <button
-            [disabled]="viewModel.currentPage === 0"
-            mat-raised-button
-            (click)="previousPage.emit()"
-          >
-            <mat-icon data-testid="btn-customers-back"> arrow_back </mat-icon>
-          </button>
-          {{ viewModel.currentPage + 1 }}
-          <button
-            [disabled]="viewModel.currentPage >= viewModel.pageCount"
-            data-testid="btn-customers-next"
-            mat-raised-button
-            (click)="nextPage.emit()"
-          >
-            <mat-icon>arrow_forward</mat-icon>
-          </button>
         </div>
       </ng-container>
       <ng-template #noCustomers>
@@ -84,7 +66,7 @@ export type ViewModel = {
   ],
 })
 export class CustomersComponent {
-  @Input({ required: true }) viewModel: ViewModel | undefined;
+  @Input({ required: true }) customers: Customer[] = [];
   @Output() previousPage = new EventEmitter();
   @Output() nextPage = new EventEmitter();
 }
