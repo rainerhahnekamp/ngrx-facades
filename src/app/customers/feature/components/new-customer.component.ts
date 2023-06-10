@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { customersActions } from '@app/customers/data';
+import { CustomersFacade } from '@app/customers/data';
 import { countries } from '../countries';
 import { Customer } from '@app/customers/model';
 import { CustomerComponent } from '@app/customers/ui';
@@ -25,10 +24,10 @@ const newCustomer: Customer = {
 })
 export class NewCustomerComponent {
   countries = countries;
-  #store = inject(Store);
+  #facade = inject(CustomersFacade);
 
   submit(customer: Customer) {
-    this.#store.dispatch(customersActions.add({ customer }));
+    this.#facade.add(customer);
   }
 
   protected readonly newCustomer = newCustomer;

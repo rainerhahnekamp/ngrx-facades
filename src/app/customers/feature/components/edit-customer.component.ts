@@ -1,6 +1,5 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { customersActions, fromCustomers } from '@app/customers/data';
+import { CustomersFacade } from '@app/customers/data';
 import { CustomerComponent } from '@app/customers/ui';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { filterDefined } from '@app/shared';
@@ -22,22 +21,23 @@ import { Observable } from 'rxjs';
 })
 export class EditCustomerComponent implements OnInit {
   @Input() id = '';
-  #store = inject(Store);
+  #facade = inject(CustomersFacade);
+
   protected customer$: Observable<Customer> | undefined;
 
   ngOnInit() {
-    this.customer$ = this.#store
-      .select(fromCustomers.selectById(Number(this.id || 1)))
+    this.customer$ = this.#facade
+      .byId(Number(this.id || 0))
       .pipe(filterDefined);
   }
 
   submit(customer: Customer) {
-    this.#store.dispatch(customersActions.update({ customer }));
+    this.#facade.update(customer);
   }
 
   remove(id: number) {
     if (confirm(`Really delete?`)) {
-      this.#store.dispatch(customersActions.remove({ id }));
+      this.#facade.remove(id);
     }
   }
 

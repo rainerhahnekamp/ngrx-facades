@@ -7,11 +7,10 @@ import {
 import { Routes } from '@angular/router';
 import { CustomersInterceptor } from './customers.interceptor';
 import { EditCustomerComponent } from './components/edit-customer.component';
-import { customersActions, provideCustomers } from '@app/customers/data';
+import { CustomersFacade, provideCustomers } from '@app/customers/data';
 import { CustomersContainerComponent } from './components/customers-container.component';
 import { NewCustomerComponent } from './components/new-customer.component';
 import { inject } from '@angular/core';
-import { Store } from '@ngrx/store';
 
 export const customersRoutes: Routes = [
   {
@@ -25,12 +24,7 @@ export const customersRoutes: Routes = [
         multi: true,
       },
     ],
-    canActivate: [
-      () => {
-        const store = inject(Store);
-        store.dispatch(customersActions.load());
-      },
-    ],
+    canActivate: [() => inject(CustomersFacade).load()],
     children: [
       {
         path: '',

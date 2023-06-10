@@ -3,13 +3,12 @@ import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { fromCustomers } from '@app/customers/data';
 import { CustomersComponent } from '@app/customers/ui';
+import { CustomersFacade } from '@app/customers/data';
 
 @Component({
   template: `<app-customers
-    *ngIf="customers$ | async as customers"
+    *ngIf="facade.customers$ | async as customers"
     [customers]="customers"
   />`,
   standalone: true,
@@ -25,6 +24,5 @@ import { CustomersComponent } from '@app/customers/ui';
   ],
 })
 export class CustomersContainerComponent {
-  #store = inject(Store);
-  customers$ = this.#store.select(fromCustomers.selectAll);
+  protected facade = inject(CustomersFacade);
 }
