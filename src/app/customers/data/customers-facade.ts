@@ -7,18 +7,25 @@ import { fromCustomers } from './customers.selectors';
 
 @Injectable({ providedIn: 'root' })
 export class CustomersFacade {
+  #isLoaded = false;
   #store = inject(Store);
 
   get customers$(): Observable<Customer[]> {
+    this.#assertLoaded();
     return this.#store.select(fromCustomers.selectAll);
   }
 
   byId(id: number): Observable<Customer | undefined> {
+    this.#assertLoaded();
+
     return this.#store.select(fromCustomers.selectById(id));
   }
 
-  async load() {
-    this.#store.dispatch(customersActions.load());
+  #assertLoaded() {
+    if (!this.#isLoaded) {
+      this.#store.dispatch(customersActions.load());
+      this.#isLoaded = true;
+    }
   }
 
   remove(id: number) {
