@@ -44,13 +44,14 @@ export class CustomersEffects {
       tap(() => this.#router.navigateByUrl('/customer'))
     );
   });
+
   load$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(customersActions.load),
-      switchMap(() => this.#http.get<Customer[]>(this.url)),
-      map((customers) =>
+      switchMap(() => this.#http.get<{ content: Customer[] }>(this.url)),
+      map(({ content }) =>
         customersActions.loaded({
-          customers,
+          customers: content,
         })
       )
     )
